@@ -54,6 +54,7 @@ class TouchControls {
   }
 
   bindEvents() {
+    const self = this;
     const joystickArea = document.getElementById('joystickArea');
     const joystickStick = document.getElementById('joystickStick');
     const joystickBase = document.getElementById('joystickBase');
@@ -232,16 +233,18 @@ class TouchControls {
       const moveX = dx / (cursorRadius - cursorStickRadius);
       const moveY = dy / (cursorRadius - cursorStickRadius);
 
-      if (!this.miningActive) {
-        this.cursorX += moveX * 12;
-        this.cursorY += moveY * 12;
+      this.cursorX += moveX * 12;
+      this.cursorY += moveY * 12;
 
-        const canvasRect = this.game.canvas.getBoundingClientRect();
-        this.cursorX = Math.max(0, Math.min(this.cursorX, canvasRect.width));
-        this.cursorY = Math.max(0, Math.min(this.cursorY, canvasRect.height));
+      const canvasRect = this.game.canvas.getBoundingClientRect();
+      this.cursorX = Math.max(0, Math.min(this.cursorX, canvasRect.width));
+      this.cursorY = Math.max(0, Math.min(this.cursorY, canvasRect.height));
 
-        this.game.input.touch.cursorX = this.cursorX;
-        this.game.input.touch.cursorY = this.cursorY;
+      this.game.input.touch.cursorX = this.cursorX;
+      this.game.input.touch.cursorY = this.cursorY;
+
+      if (this.miningActive) {
+        this.game.input.mouse.leftDown = true;
       }
     };
 
@@ -445,6 +448,10 @@ class TouchControls {
         this.game.player.inventory.addItem(dropItem, 1);
       }
     }
+  }
+
+  isMining() {
+    return this.miningActive;
   }
 
   handlePlace() {

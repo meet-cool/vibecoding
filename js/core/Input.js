@@ -21,6 +21,12 @@ class InputManager {
       touches: [],
       startTime: 0,
       longPress: false,
+      cursorActive: false,
+      cursorX: 0,
+      cursorY: 0,
+      moveX: 0,
+      moveY: 0,
+      jump: false,
     };
     this.camera = null;
 
@@ -123,6 +129,10 @@ class InputManager {
 
     if (this.mouse.leftDown) {
       this.mouse.leftDownTime++;
+    }
+
+    if (this.touch && this.touch.cursorActive) {
+      return;
     }
 
     if (this.touch.active && !this.touch.longPress) {

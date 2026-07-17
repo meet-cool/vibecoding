@@ -7,6 +7,7 @@ class UIManager {
     this.inventoryPanel = document.getElementById('inventoryPanel');
     this.pausePanel = document.getElementById('pausePanel');
     this.saveListPanel = document.getElementById('saveListPanel');
+    this.settingsPanel = document.getElementById('settingsPanel');
 
     this.initMenu();
     this.initHUD();
