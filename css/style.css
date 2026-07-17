@@ -167,6 +167,7 @@ html, body {
   left: 10px;
   display: flex;
   gap: 8px;
+  pointer-events: auto;
 }
 
 .hud-btn {
@@ -182,6 +183,7 @@ html, body {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
+  pointer-events: auto;
 }
 
 .hud-btn:hover {

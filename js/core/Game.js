@@ -282,7 +282,6 @@ class Game {
     this.renderer.renderPlayer(this.player);
     this.renderer.renderMiningProgress(this.player, this.input);
     this.renderer.renderBlockHighlight(this.input, this.player);
-    this.renderer.renderCursor(this.input, this.renderer.camera);
   }
 
   updateCraftingResult() {

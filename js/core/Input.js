@@ -81,27 +81,6 @@ class InputManager {
       e.preventDefault();
       this.mouse.wheel += e.deltaY > 0 ? 1 : -1;
     }, { passive: false });
-
-    this.canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      this.touch.active = true;
-      this.touch.startTime = Date.now();
-      this.touch.longPress = false;
-      this.updateTouches(e);
-    });
-
-    this.canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      this.updateTouches(e);
-    });
-
-    this.canvas.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      this.updateTouches(e);
-      if (e.touches.length === 0) {
-        this.touch.active = false;
-      }
-    });
   }
 
   updateTouches(e) {
