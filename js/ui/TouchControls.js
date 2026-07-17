@@ -248,4 +248,11 @@ class TouchControls {
       getMouseWorldPos: () => ({ x: worldX, y: worldY }),
     });
   }
+
+  toggleJoystick(enabled) {
+    const joystickArea = document.getElementById('joystickArea');
+    if (joystickArea) {
+      joystickArea.style.display = enabled ? 'block' : 'none';
+    }
+  }
 }

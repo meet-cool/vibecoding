@@ -10,7 +10,7 @@
   <div id="mainMenu">
     <h1 class="menu-title">2D 沙盒世界</h1>
     <p class="menu-subtitle">挖掘 · 建造 · 探索</p>
-    <div class="menu-version">v1.7.3</div>
+    <div class="menu-version">v1.7.4</div>
     <div class="menu-buttons">
       <button id="startBtn" class="menu-btn">创建新世界</button>
       <button id="continueBtn" class="menu-btn">继续游戏</button>
@@ -49,16 +49,20 @@
   </div>
 
     <div id="inventoryPanel">
-      <div class="panel" style="position: relative;">
+      <div class="panel inventory-panel" style="position: relative;">
         <button id="inventoryCloseBtn" class="close-btn">×</button>
-        <h2 class="panel-title">背包 & 合成</h2>
+        <h2 class="panel-title">背包</h2>
         <div class="inventory-container">
           <div class="crafting-section">
-            <div id="craftingGrid"></div>
-            <div class="craft-arrow">→</div>
-            <div id="craftingResult"></div>
+            <div class="crafting-label">合成</div>
+            <div class="crafting-grid-wrapper">
+              <div id="craftingGrid"></div>
+              <div class="craft-arrow">→</div>
+              <div id="craftingResult"></div>
+            </div>
           </div>
           <div id="inventorySlots"></div>
+          <div id="inventoryHotbar"></div>
         </div>
       </div>
     </div>
@@ -93,6 +97,10 @@
         <div class="setting-item">
           <label>触摸控制</label>
           <button id="touchToggle" class="toggle-btn">开启</button>
+        </div>
+        <div class="setting-item">
+          <label>摇杆移动</label>
+          <button id="joystickToggle" class="toggle-btn off">关闭</button>
         </div>
       </div>
       <div class="panel-buttons">

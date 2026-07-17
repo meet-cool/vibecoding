@@ -88,6 +88,14 @@ class Game {
     if (autoJump !== null) {
       this.player.autoJumpEnabled = autoJump === 'true';
     }
+    this.applySettings();
+  }
+
+  applySettings() {
+    if (this.touchControls) {
+      const joystickEnabled = localStorage.getItem('sandbox2d_setting_joystickEnabled');
+      this.touchControls.toggleJoystick(joystickEnabled === 'true');
+    }
   }
 
   saveGame() {

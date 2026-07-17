@@ -341,6 +341,8 @@ class UIManager {
     this.inventoryPanel.style.display = 'flex';
     this.renderInventorySlots();
     this.renderCraftingGrid();
+    this.renderInventoryHotbar();
+    this.renderHotbar();
   }
 
   renderInventorySlots() {
@@ -364,6 +366,71 @@ class UIManager {
       `;
     }
     container.innerHTML = html;
+
+    container.querySelectorAll('.inv-slot').forEach(el => {
+      el.addEventListener('click', () => {
+        const slot = parseInt(el.dataset.slot);
+        this.handleInventorySlotClick(slot);
+      });
+    });
+  }
+
+  renderInventoryHotbar() {
+    const container = document.getElementById('inventoryHotbar');
+    if (!container || !this.game.player) return;
+
+    let html = '<div class="inventory-hotbar-label">快捷栏</div>';
+    html += '<div class="inventory-hotbar">';
+    for (let i = 0; i < 9; i++) {
+      const slot = this.game.player.inventory.slots[i];
+      const selected = i === this.game.player.inventory.selectedSlot;
+      const itemInfo = slot.type ? ItemInfo[slot.type] : null;
+
+      html += `
+        <div class="hotbar-slot ${selected ? 'selected' : ''}" data-slot="${i}">
+          ${slot.type ? `
+            <div class="item-icon" style="background:${itemInfo?.color || '#888'}">
+              ${this.getItemIcon(itemInfo?.icon, itemInfo?.color)}
+            </div>
+            ${slot.count > 1 ? `<span class="item-count">${slot.count}</span>` : ''}
+          ` : ''}
+        </div>
+      `;
+    }
+    html += '</div>';
+    container.innerHTML = html;
+
+    container.querySelectorAll('.hotbar-slot').forEach(el => {
+      el.addEventListener('click', () => {
+        const slot = parseInt(el.dataset.slot);
+        this.game.player.inventory.setSelectedSlot(slot);
+        this.renderInventoryHotbar();
+        this.renderHotbar();
+      });
+    });
+  }
+
+  handleInventorySlotClick(slotIndex) {
+    const slot = this.game.player.inventory.slots[slotIndex];
+    const selectedItem = this.game.player.inventory.getSelectedItem();
+
+    if (!selectedItem?.type && slot.type) {
+      this.game.player.inventory.setSelectedSlot(slotIndex);
+      this.renderInventoryHotbar();
+      this.renderHotbar();
+    } else if (selectedItem?.type && !slot.type) {
+      this.game.player.inventory.setSlot(slotIndex, selectedItem.type, selectedItem.count);
+      this.game.player.inventory.setSlot(this.game.player.inventory.selectedSlot, null, 0);
+      this.game.player.inventory.selectedSlot = 0;
+      this.renderInventorySlots();
+      this.renderInventoryHotbar();
+      this.renderHotbar();
+    } else if (selectedItem?.type && slot.type) {
+      this.game.player.inventory.swapSlots(slotIndex, this.game.player.inventory.selectedSlot);
+      this.renderInventorySlots();
+      this.renderInventoryHotbar();
+      this.renderHotbar();
+    }
   }
 
   renderCraftingGrid() {
@@ -430,6 +497,7 @@ class UIManager {
 
     this.renderCraftingGrid();
     this.renderHotbar();
+    this.renderInventorySlots();
   }
 
   initSettingsPanel() {
@@ -450,6 +518,7 @@ class UIManager {
     this.setupToggle('soundToggle', 'soundEnabled', true);
     this.setupToggle('musicToggle', 'musicEnabled', false);
     this.setupToggle('touchToggle', 'touchControls', true);
+    this.setupToggle('joystickToggle', 'joystickEnabled', false);
 
     document.getElementById('settingsPanel')?.addEventListener('click', (e) => {
       if (e.target === document.getElementById('settingsPanel')) {
@@ -483,8 +552,8 @@ class UIManager {
   }
 
   saveSettings() {
-    const toggles = ['autoJumpToggle', 'soundToggle', 'musicToggle', 'touchToggle'];
-    const keys = ['autoJump', 'soundEnabled', 'musicEnabled', 'touchControls'];
+    const toggles = ['autoJumpToggle', 'soundToggle', 'musicToggle', 'touchToggle', 'joystickToggle'];
+    const keys = ['autoJump', 'soundEnabled', 'musicEnabled', 'touchControls', 'joystickEnabled'];
     
     for (let i = 0; i < toggles.length; i++) {
       const btn = document.getElementById(toggles[i]);
@@ -492,6 +561,8 @@ class UIManager {
         localStorage.setItem('sandbox2d_setting_' + keys[i], btn.dataset.value);
       }
     }
+    
+    this.game.applySettings();
   }
 
   escapeHtml(text) {

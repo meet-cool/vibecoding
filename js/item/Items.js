@@ -61,8 +61,10 @@ const CraftingRecipes2x2 = [
   { input: [[ItemType.PLANKS, ItemType.PLANKS], [ItemType.PLANKS, ItemType.PLANKS]], output: { type: ItemType.WORKBENCH, count: 1 } },
   { input: [[ItemType.PLANKS, null], [ItemType.PLANKS, null]], output: { type: ItemType.STICK, count: 4 } },
   { input: [[ItemType.STONE, ItemType.STONE], [ItemType.STONE, ItemType.STONE]], output: { type: ItemType.COBBLESTONE, count: 4 } },
-  { input: [[ItemType.WOOL, ItemType.WOOL], [ItemType.WOOL, ItemType.WOOL]], output: { type: ItemType.WOOL, count: 1 } },
   { input: [[ItemType.COAL, null], [ItemType.STICK, null]], output: { type: ItemType.TORCH, count: 4 } },
+  { input: [[ItemType.PLANKS, ItemType.PLANKS], [ItemType.PLANKS, ItemType.PLANKS]], output: { type: ItemType.WORKBENCH, count: 1 } },
+  { input: [[ItemType.STICK, ItemType.STICK], [ItemType.STICK, ItemType.STICK]], output: { type: ItemType.STICK, count: 2 } },
+  { input: [[ItemType.WOOD, ItemType.WOOD], [ItemType.WOOD, ItemType.WOOD]], output: { type: ItemType.PLANKS, count: 16 } },
 ];
 
 const CraftingRecipes3x3 = [
