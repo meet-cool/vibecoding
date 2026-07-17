@@ -164,7 +164,7 @@ html, body {
 .hud-top-right {
   position: absolute;
   top: 10px;
-  right: 60px;
+  left: 10px;
   display: flex;
   gap: 8px;
 }
@@ -616,6 +616,17 @@ html, body {
 
 .action-btn:active {
   transform: scale(0.9);
+}
+
+.aux-buttons {
+  position: absolute;
+  bottom: 170px;
+  right: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: auto;
+  align-items: center;
 }
 
 .cursor-joystick-area {

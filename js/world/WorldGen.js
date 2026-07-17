@@ -85,15 +85,20 @@ class WorldGenerator {
         blocks[y * CHUNK_WIDTH + x] = blockType;
       }
 
-      if (biome === 'forest') {
-        const treeChance = this.noise.noise2D(worldX * 0.3, 600);
-        if (treeChance > 0.6 && worldX % 5 === 0) {
-          this.placeTree(blocks, x, height);
-        }
-      } else if (biome === 'plains') {
-        const treeChance = this.noise.noise2D(worldX * 0.25, 700);
-        if (treeChance > 0.75 && worldX % 7 === 0) {
-          this.placeTree(blocks, x, height);
+      const spawnX = Math.floor(WORLD_WIDTH / 2);
+      const distFromSpawn = Math.abs(worldX - spawnX);
+
+      if (distFromSpawn > 20) {
+        if (biome === 'forest') {
+          const treeChance = this.noise.noise2D(worldX * 0.3, 600);
+          if (treeChance > 0.35 && worldX % 3 === 0) {
+            this.placeTree(blocks, x, height);
+          }
+        } else if (biome === 'plains') {
+          const treeChance = this.noise.noise2D(worldX * 0.25, 700);
+          if (treeChance > 0.55 && worldX % 5 === 0) {
+            this.placeTree(blocks, x, height);
+          }
         }
       }
     }

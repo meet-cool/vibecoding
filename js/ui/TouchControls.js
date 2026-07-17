@@ -282,7 +282,6 @@ class TouchControls {
       this.touchStartPos = null;
       cursorJoystickStick.style.left = '50%';
       cursorJoystickStick.style.top = '50%';
-      this.game.input.touch.cursorActive = false;
     };
 
     cursorJoystickArea.addEventListener('touchstart', (e) => {
@@ -320,9 +319,21 @@ class TouchControls {
       this.ui.updateInventoryUI();
     });
 
-    this.game.input.touch = { 
-      moveX: 0, 
-      moveY: 0, 
+    const breakBtn = document.getElementById('breakBtn');
+    breakBtn?.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.handleBreak();
+    });
+
+    const placeBtn = document.getElementById('placeBtn');
+    placeBtn?.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.handlePlace();
+    });
+
+    this.game.input.touch = {
+      moveX: 0,
+      moveY: 0,
       jump: false,
       cursorActive: false,
       cursorX: 0,
@@ -405,5 +416,64 @@ class TouchControls {
     } else if (mob.mobType === 'pig' && mob.health > 0) {
       this.game.player.inventory.addItem(ItemType.PORKCHOP, 1);
     }
+  }
+
+  handleBreak() {
+    if (!this.game.player || !this.game.world || !this.cursorInitialized) return;
+
+    const worldX = this.cursorX + this.game.renderer.camera.x;
+    const worldY = this.cursorY + this.game.renderer.camera.y;
+    const tileX = Math.floor(worldX / TILE_SIZE);
+    const tileY = Math.floor(worldY / TILE_SIZE);
+
+    const blockType = this.game.world.getBlock(tileX, tileY);
+    if (blockType === BlockType.AIR) return;
+
+    const props = BlockProperties[blockType];
+    if (!props || props.hardness < 0) return;
+
+    const selectedItem = this.game.player.inventory.getSelectedItem();
+    const toolType = this.game.player.itemToBlockType(selectedItem?.type);
+
+    if (props.minTool && !isToolEffective(toolType, blockType)) return;
+
+    this.game.world.setBlock(tileX, tileY, BlockType.AIR);
+
+    if (props.drop !== null && props.drop !== undefined) {
+      const dropItem = this.game.player.blockTypeToItemType(props.drop);
+      if (dropItem) {
+        this.game.player.inventory.addItem(dropItem, 1);
+      }
+    }
+  }
+
+  handlePlace() {
+    if (!this.game.player || !this.game.world || !this.cursorInitialized) return;
+
+    const worldX = this.cursorX + this.game.renderer.camera.x;
+    const worldY = this.cursorY + this.game.renderer.camera.y;
+    const tileX = Math.floor(worldX / TILE_SIZE);
+    const tileY = Math.floor(worldY / TILE_SIZE);
+
+    if (this.game.world.getBlock(tileX, tileY) !== BlockType.AIR) return;
+
+    const playerBounds = this.game.player.getBounds();
+    const blockBounds = {
+      x: tileX * TILE_SIZE,
+      y: tileY * TILE_SIZE,
+      width: TILE_SIZE,
+      height: TILE_SIZE,
+    };
+
+    if (this.game.player.rectsOverlap(playerBounds, blockBounds)) return;
+
+    const selectedItem = this.game.player.inventory.getSelectedItem();
+    if (!selectedItem || !selectedItem.type) return;
+
+    const info = ItemInfo[selectedItem.type];
+    if (!info || !info.placeAs) return;
+
+    this.game.world.setBlock(tileX, tileY, info.placeAs);
+    this.game.player.inventory.removeItem(this.game.player.inventory.selectedSlot, 1);
   }
 }

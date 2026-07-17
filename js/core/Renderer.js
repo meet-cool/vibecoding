@@ -480,10 +480,12 @@ class Renderer {
   }
 
   renderCursor(input, camera) {
-    if (!input.touch || !input.touch.cursorActive) return;
+    const touch = input.touch;
+    const tc = window.game?.touchControls;
+    if (!tc || !tc.cursorInitialized) return;
 
-    const screenX = input.touch.cursorX;
-    const screenY = input.touch.cursorY;
+    const screenX = tc.cursorX;
+    const screenY = tc.cursorY;
 
     this.ctx.strokeStyle = 'rgba(255, 193, 7, 0.8)';
     this.ctx.lineWidth = 2;
@@ -494,5 +496,14 @@ class Renderer {
     this.ctx.fillRect(screenX - 1, screenY + 2, 2, 6);
     this.ctx.fillRect(screenX - 8, screenY - 1, 6, 2);
     this.ctx.fillRect(screenX + 2, screenY - 1, 6, 2);
+
+    const worldX = screenX + this.camera.x;
+    const worldY = screenY + this.camera.y;
+    const tileX = Math.floor(worldX / TILE_SIZE);
+    const tileY = Math.floor(worldY / TILE_SIZE);
+
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeRect(tileX * TILE_SIZE - this.camera.x, tileY * TILE_SIZE - this.camera.y, TILE_SIZE, TILE_SIZE);
   }
 }
