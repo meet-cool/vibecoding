@@ -6,6 +6,7 @@ class TouchControls {
     this.cursorX = 0;
     this.cursorY = 0;
     this.cursorActive = false;
+    this.cursorInitialized = false;
     this.cursorJoystickActive = false;
     this.cursorJoystickId = null;
     this.longPressTimer = null;
@@ -42,6 +43,10 @@ class TouchControls {
       <div class="action-buttons">
         <button class="action-btn jump-btn" id="jumpBtn">跳</button>
         <button class="action-btn inv-btn" id="invBtn">背包</button>
+      </div>
+      <div class="aux-buttons">
+        <button class="action-btn break-btn" id="breakBtn">破坏</button>
+        <button class="action-btn place-btn" id="placeBtn">放置</button>
       </div>
     `;
 
@@ -169,6 +174,10 @@ class TouchControls {
       this.game.input.touch.cursorActive = true;
       this.game.input.touch.cursorX = this.cursorX;
       this.game.input.touch.cursorY = this.cursorY;
+
+      if (!this.cursorInitialized) {
+        this.cursorInitialized = true;
+      }
 
       this.miningActive = false;
       this.miningStartTime = 0;
