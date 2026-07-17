@@ -1,1 +1,91 @@
-￼code
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>2D 沙盒世界</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="mainMenu">
+    <h1 class="menu-title">2D 沙盒世界</h1>
+    <p class="menu-subtitle">挖掘 · 建造 · 探索</p>
+    <div class="menu-buttons">
+      <button id="startBtn" class="menu-btn">创建新世界</button>
+      <button id="continueBtn" class="menu-btn">继续游戏</button>
+      <button id="savesBtn" class="menu-btn">存档管理</button>
+    </div>
+  </div>
+
+  <div id="gameContainer">
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="hud">
+      <div class="hud-top">
+        <div id="healthBar"></div>
+        <div id="hungerBar"></div>
+      </div>
+      <div id="coords">X: 0 Y: 0</div>
+      <div id="hotbar"></div>
+    </div>
+
+    <div id="touchControls"></div>
+
+    <div id="pausePanel">
+      <div class="panel">
+        <h2 class="panel-title">游戏暂停</h2>
+        <div class="panel-buttons">
+          <button id="resumeBtn" class="panel-btn">继续游戏</button>
+          <button id="saveExitBtn" class="panel-btn">保存并退出</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="inventoryPanel">
+      <div class="panel" style="position: relative;">
+        <button id="inventoryCloseBtn" class="close-btn">×</button>
+        <h2 class="panel-title">背包 & 合成</h2>
+        <div class="inventory-container">
+          <div class="crafting-section">
+            <div id="craftingGrid"></div>
+            <div class="craft-arrow">→</div>
+            <div id="craftingResult"></div>
+          </div>
+          <div id="inventorySlots"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="saveListPanel">
+    <div class="panel" style="position: relative;">
+      <button id="closeSavesBtn" class="close-btn">×</button>
+      <h2 class="panel-title">存档管理</h2>
+      <div id="savesList"></div>
+      <button id="newSaveBtn" class="panel-btn">创建新存档</button>
+    </div>
+  </div>
+
+  <script src="js/world/Blocks.js"></script>
+  <script src="js/world/SimplexNoise.js"></script>
+  <script src="js/world/WorldGen.js"></script>
+  <script src="js/world/Chunk.js"></script>
+  <script src="js/world/World.js"></script>
+  <script src="js/core/Physics.js"></script>
+  <script src="js/core/Input.js"></script>
+  <script src="js/core/Renderer.js"></script>
+  <script src="js/item/Items.js"></script>
+  <script src="js/item/Inventory.js"></script>
+  <script src="js/item/Crafting.js"></script>
+  <script src="js/entity/Entity.js"></script>
+  <script src="js/entity/Mob.js"></script>
+  <script src="js/entity/Player.js"></script>
+  <script src="js/entity/mobs/Mobs.js"></script>
+  <script src="js/entity/EntityManager.js"></script>
+  <script src="js/save/SaveManager.js"></script>
+  <script src="js/core/Game.js"></script>
+  <script src="js/ui/UIManager.js"></script>
+  <script src="js/ui/TouchControls.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
