@@ -161,12 +161,17 @@ class TouchControls {
 
     const touch = e.touches[0];
     const rect = this.game.canvas.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
+    const x = (touch.clientX - rect.left) * (this.game.canvas.width / rect.width);
+    const y = (touch.clientY - rect.top) * (this.game.canvas.height / rect.height);
 
     this.touchStartPos = { x, y };
     this.touchStartTime = Date.now();
     this.isLongPress = false;
+
+    this.game.input.mouse.x = x;
+    this.game.input.mouse.y = y;
+    this.game.input.mouse.worldX = x + this.game.renderer.camera.x;
+    this.game.input.mouse.worldY = y + this.game.renderer.camera.y;
 
     this.game.input.touch.active = true;
     this.game.input.touch.startTime = Date.now();
