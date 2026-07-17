@@ -105,11 +105,19 @@ class World {
   }
 
   static deserialize(data) {
-    const world = new World(data.seed);
+    const world = new World(data.seed || Date.now());
     if (data.chunks) {
-      for (const [key, chunkData] of Object.entries(data.chunks)) {
-        const chunk = Chunk.deserialize(chunkData);
-        world.chunks.set(parseInt(key), chunk);
+      try {
+        for (const [key, chunkData] of Object.entries(data.chunks)) {
+          try {
+            const chunk = Chunk.deserialize(chunkData);
+            world.chunks.set(parseInt(key), chunk);
+          } catch (e) {
+            console.warn('Failed to deserialize chunk:', key, e);
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load chunks from save:', e);
       }
     }
     return world;

@@ -152,6 +152,10 @@ class UIManager {
       this.showSettingsPanel();
     });
 
+    document.getElementById('pauseSettingsBtn')?.addEventListener('click', () => {
+      this.showSettingsPanel();
+    });
+
     this.initSettingsPanel();
   }
 
@@ -439,6 +443,12 @@ class UIManager {
     this.setupToggle('soundToggle', 'soundEnabled', true);
     this.setupToggle('musicToggle', 'musicEnabled', false);
     this.setupToggle('touchToggle', 'touchControls', true);
+
+    document.getElementById('settingsPanel')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('settingsPanel')) {
+        this.settingsPanel.style.display = 'none';
+      }
+    });
   }
 
   setupToggle(elementId, settingKey, defaultValue) {
