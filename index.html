@@ -25,6 +25,10 @@
         <div id="healthBar"></div>
         <div id="hungerBar"></div>
       </div>
+      <div class="hud-top-right">
+        <button id="pauseBtn" class="hud-btn">⏸</button>
+        <button id="settingsBtn" class="hud-btn">⚙</button>
+      </div>
       <div id="coords">X: 0 Y: 0</div>
       <div id="hotbar"></div>
     </div>
@@ -63,6 +67,34 @@
       <h2 class="panel-title">存档管理</h2>
       <div id="savesList"></div>
       <button id="newSaveBtn" class="panel-btn">创建新存档</button>
+    </div>
+  </div>
+
+  <div id="settingsPanel">
+    <div class="panel" style="position: relative;">
+      <button id="settingsCloseBtn" class="close-btn">×</button>
+      <h2 class="panel-title">设置</h2>
+      <div class="settings-container">
+        <div class="setting-item">
+          <label>自动跳跃</label>
+          <button id="autoJumpToggle" class="toggle-btn">开启</button>
+        </div>
+        <div class="setting-item">
+          <label>音效</label>
+          <button id="soundToggle" class="toggle-btn">开启</button>
+        </div>
+        <div class="setting-item">
+          <label>音乐</label>
+          <button id="musicToggle" class="toggle-btn">关闭</button>
+        </div>
+        <div class="setting-item">
+          <label>触摸控制</label>
+          <button id="touchToggle" class="toggle-btn">开启</button>
+        </div>
+      </div>
+      <div class="panel-buttons">
+        <button id="saveSettingsBtn" class="panel-btn">保存设置</button>
+      </div>
     </div>
   </div>
 

@@ -12,10 +12,15 @@ class InputManager {
       leftPressed: false,
       rightPressed: false,
       wheel: 0,
+      leftClick: false,
+      rightClick: false,
+      leftDownTime: 0,
     };
     this.touch = {
       active: false,
       touches: [],
+      startTime: 0,
+      longPress: false,
     };
     this.camera = null;
 
@@ -74,6 +79,8 @@ class InputManager {
     this.canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
       this.touch.active = true;
+      this.touch.startTime = Date.now();
+      this.touch.longPress = false;
       this.updateTouches(e);
     });
 
@@ -113,11 +120,25 @@ class InputManager {
       this.mouse.worldX = this.mouse.x + this.camera.x;
       this.mouse.worldY = this.mouse.y + this.camera.y;
     }
+
+    if (this.mouse.leftDown) {
+      this.mouse.leftDownTime++;
+    }
+
+    if (this.touch.active && !this.touch.longPress) {
+      const touchDuration = Date.now() - this.touch.startTime;
+      if (touchDuration > 200) {
+        this.touch.longPress = true;
+        this.mouse.leftDown = true;
+      }
+    }
   }
 
   endFrame() {
     this.mouse.leftPressed = false;
     this.mouse.rightPressed = false;
+    this.mouse.leftClick = false;
+    this.mouse.rightClick = false;
     this.mouse.wheel = 0;
     for (const key in this.keys) {
       if (key.endsWith('_pressed')) {

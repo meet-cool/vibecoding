@@ -153,6 +153,34 @@ html, body {
   opacity: 0.7;
 }
 
+.hud-top-right {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+  display: flex;
+  gap: 8px;
+}
+
+.hud-btn {
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.hud-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
 #coords {
   position: absolute;
   top: 10px;
@@ -167,7 +195,7 @@ html, body {
 
 #hotbar {
   position: fixed;
-  bottom: 10px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -175,7 +203,7 @@ html, body {
   padding: 3px;
   background: #2d2d2d;
   border: 3px solid #1a1a1a;
-  border-radius: 4px;
+  border-radius: 4px 4px 0 0;
   pointer-events: auto;
 }
 
@@ -214,7 +242,7 @@ html, body {
   font-weight: bold;
 }
 
-#pausePanel, #inventoryPanel, #saveListPanel {
+#pausePanel, #inventoryPanel, #saveListPanel, #settingsPanel {
   position: fixed;
   top: 0;
   left: 0;
@@ -419,6 +447,50 @@ html, body {
   background: #8D6E63;
 }
 
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: #5D4037;
+  border: 2px solid #3E2723;
+  border-radius: 4px;
+}
+
+.setting-item label {
+  color: #fff;
+  font-size: 16px;
+}
+
+.toggle-btn {
+  padding: 6px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: bold;
+  color: #fff;
+  background: #7CB342;
+  border: 2px solid #558B2F;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn.off {
+  background: #757575;
+  border-color: #424242;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.05);
+}
+
 .btn-danger {
   background: #c62828;
   border-color: #b71c1c;
@@ -441,7 +513,7 @@ html, body {
 
 .joystick-area {
   position: absolute;
-  bottom: 100px;
+  bottom: 70px;
   left: 20px;
   width: 150px;
   height: 150px;
@@ -474,7 +546,7 @@ html, body {
 
 .action-buttons {
   position: absolute;
-  bottom: 100px;
+  bottom: 70px;
   right: 20px;
   display: flex;
   flex-direction: column;
@@ -544,7 +616,8 @@ html, body {
   }
 
   #hotbar {
-    bottom: 200px;
+    bottom: 0;
+    padding: 2px;
   }
 
   .hotbar-slot {
@@ -555,5 +628,15 @@ html, body {
   .hotbar-slot .item-icon {
     width: 26px;
     height: 26px;
+  }
+
+  .hud-top-right {
+    right: 50px;
+  }
+
+  .hud-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
   }
 }

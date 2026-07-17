@@ -52,6 +52,8 @@ class Game {
     this.showInventory = false;
     this.paused = false;
 
+    this.loadSettings();
+
     if (this.onStateChange) this.onStateChange('playing');
     this.gameLoop();
   }
@@ -70,9 +72,19 @@ class Game {
     this.showInventory = false;
     this.paused = false;
 
+    this.loadSettings();
+
     if (this.onStateChange) this.onStateChange('playing');
     this.gameLoop();
     return true;
+  }
+
+  loadSettings() {
+    if (!this.player) return;
+    const autoJump = localStorage.getItem('sandbox2d_setting_autoJump');
+    if (autoJump !== null) {
+      this.player.autoJumpEnabled = autoJump === 'true';
+    }
   }
 
   saveGame() {
@@ -135,6 +147,12 @@ class Game {
 
     if (this.input.isLeftDown()) {
       this.handleLeftClick();
+    } else if (this.input.touch.active && !this.input.touch.longPress) {
+      const touchDuration = Date.now() - this.input.touch.startTime;
+      if (touchDuration < 200 && this.input.touch.touches.length > 0) {
+        this.handleTouchTap();
+      }
+      this.player.stopMining();
     } else {
       this.player.stopMining();
     }
@@ -201,6 +219,38 @@ class Game {
     }
 
     this.player.placeBlock(this.world, this.input);
+  }
+
+  handleTouchTap() {
+    const touch = this.input.touch.touches[0];
+    const worldX = touch.x + this.renderer.camera.x;
+    const worldY = touch.y + this.renderer.camera.y;
+    const tileX = Math.floor(worldX / TILE_SIZE);
+    const tileY = Math.floor(worldY / TILE_SIZE);
+
+    const blockType = this.world.getBlock(tileX, tileY);
+    if (blockType === BlockType.WORKBENCH) {
+      this.showCrafting = !this.showCrafting;
+      this.showInventory = true;
+      if (this.ui) this.ui.updateInventoryUI();
+      return;
+    }
+
+    const selectedItem = this.player.inventory.getSelectedItem();
+    if (selectedItem && selectedItem.type) {
+      const info = ItemInfo[selectedItem.type];
+      if (info && info.food) {
+        this.player.useItem();
+        return;
+      }
+    }
+
+    this.player.placeBlock(this.world, {
+      getMouseWorldPos: () => ({ x: worldX, y: worldY }),
+    });
+
+    this.input.touch.active = false;
+    this.input.touch.longPress = false;
   }
 
   respawnPlayer() {

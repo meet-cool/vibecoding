@@ -142,6 +142,17 @@ class UIManager {
       this.game.showCrafting = false;
       this.inventoryPanel.style.display = 'none';
     });
+
+    document.getElementById('pauseBtn')?.addEventListener('click', () => {
+      this.game.paused = true;
+      this.updatePauseUI();
+    });
+
+    document.getElementById('settingsBtn')?.addEventListener('click', () => {
+      this.showSettingsPanel();
+    });
+
+    this.initSettingsPanel();
   }
 
   updateHUD() {
@@ -327,6 +338,62 @@ class UIManager {
 
     this.renderCraftingGrid();
     this.renderHotbar();
+  }
+
+  initSettingsPanel() {
+    this.settingsPanel = document.getElementById('settingsPanel');
+    
+    const closeBtn = document.getElementById('settingsCloseBtn');
+    closeBtn?.addEventListener('click', () => {
+      this.settingsPanel.style.display = 'none';
+    });
+
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    saveBtn?.addEventListener('click', () => {
+      this.saveSettings();
+      this.settingsPanel.style.display = 'none';
+    });
+
+    this.setupToggle('autoJumpToggle', 'autoJump', true);
+    this.setupToggle('soundToggle', 'soundEnabled', true);
+    this.setupToggle('musicToggle', 'musicEnabled', false);
+    this.setupToggle('touchToggle', 'touchControls', true);
+  }
+
+  setupToggle(elementId, settingKey, defaultValue) {
+    const btn = document.getElementById(elementId);
+    if (!btn) return;
+
+    const saved = localStorage.getItem('sandbox2d_setting_' + settingKey);
+    const value = saved !== null ? saved === 'true' : defaultValue;
+    this.updateToggle(btn, value);
+
+    btn.addEventListener('click', () => {
+      const current = btn.textContent === '开启';
+      this.updateToggle(btn, !current);
+    });
+  }
+
+  updateToggle(btn, enabled) {
+    btn.textContent = enabled ? '开启' : '关闭';
+    btn.classList.toggle('off', !enabled);
+    btn.dataset.value = enabled;
+  }
+
+  showSettingsPanel() {
+    this.settingsPanel.style.display = 'flex';
+  }
+
+  saveSettings() {
+    const toggles = ['autoJumpToggle', 'soundToggle', 'musicToggle', 'touchToggle'];
+    const keys = ['autoJump', 'soundEnabled', 'musicEnabled', 'touchControls'];
+    
+    for (let i = 0; i < toggles.length; i++) {
+      const btn = document.getElementById(toggles[i]);
+      if (btn) {
+        localStorage.setItem('sandbox2d_setting_' + keys[i], btn.dataset.value);
+      }
+    }
   }
 
   escapeHtml(text) {

@@ -12,6 +12,7 @@ class Player extends Entity {
     this.attackCooldown = 0;
     this.invincibleTime = 0;
     this.animTime = 0;
+    this.autoJumpEnabled = true;
 
     this.giveStarterItems();
   }
@@ -36,10 +37,18 @@ class Player extends Entity {
     let moveDir = 0;
     if (input.isKeyDown('a') || input.isKeyDown('arrowleft')) moveDir = -1;
     if (input.isKeyDown('d') || input.isKeyDown('arrowright')) moveDir = 1;
+    if (input.touch && input.touch.moveX) {
+      if (input.touch.moveX < -0.2) moveDir = -1;
+      if (input.touch.moveX > 0.2) moveDir = 1;
+    }
 
     if (moveDir !== 0) {
       this.facing = moveDir;
       physics.applyMovement(this, moveDir, dt);
+
+      if (this.onGround && this.autoJumpEnabled && this.checkAutoJump(world, moveDir)) {
+        physics.jump(this);
+      }
     } else {
       physics.applyFriction(this, dt);
     }
@@ -225,6 +234,23 @@ class Player extends Entity {
     if (this.invincibleTime > 0) return;
     super.takeDamage(amount);
     this.invincibleTime = 0.5;
+  }
+
+  checkAutoJump(world, moveDir) {
+    const checkX = Math.floor((this.x + moveDir * this.width / 2) / TILE_SIZE) + moveDir;
+    const checkY = Math.floor((this.y - this.height) / TILE_SIZE);
+    
+    for (let dy = 0; dy <= 2; dy++) {
+      const block = world.getBlock(checkX, checkY + dy);
+      if (block !== BlockType.AIR) {
+        const props = BlockProperties[block];
+        if (props && props.solid) {
+          const headY = Math.floor((this.y - this.height - 1) / TILE_SIZE);
+          return checkY + dy === headY + 1;
+        }
+      }
+    }
+    return false;
   }
 
   rectsOverlap(a, b) {
