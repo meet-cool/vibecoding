@@ -534,7 +534,8 @@ class UIManager {
     if (!slider || !valueDisplay) return;
 
     const saved = localStorage.getItem('sandbox2d_setting_mapZoom');
-    const value = saved ? parseFloat(saved) : 1;
+    let value = saved ? parseFloat(saved) : 1;
+    if (isNaN(value)) value = 1;
     slider.value = value;
     valueDisplay.textContent = value;
 
@@ -568,7 +569,8 @@ class UIManager {
     const valueDisplay = document.getElementById('mapZoomValue');
     if (slider && valueDisplay) {
       const saved = localStorage.getItem('sandbox2d_setting_mapZoom');
-      const value = saved ? parseFloat(saved) : 1;
+      let value = saved ? parseFloat(saved) : 1;
+      if (isNaN(value)) value = 1;
       slider.value = value;
       valueDisplay.textContent = value;
     }

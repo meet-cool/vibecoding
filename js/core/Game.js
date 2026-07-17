@@ -128,10 +128,14 @@ class Game {
     const dt = Math.min((currentTime - this.lastTime) / 1000, 0.05);
     this.lastTime = currentTime;
 
-    if (!this.paused) {
-      this.update(dt);
+    try {
+      if (!this.paused) {
+        this.update(dt);
+      }
+      this.render();
+    } catch (e) {
+      console.error('Game loop error:', e);
     }
-    this.render();
 
     this.input.endFrame();
     requestAnimationFrame((t) => this.gameLoop(t));
@@ -282,14 +286,19 @@ class Game {
 
   render() {
     this.renderer.clear(this.dayTime);
-    this.renderer.renderClouds(Date.now() * 0.001);
-    this.renderer.renderBackgroundMountains();
-    this.renderer.renderWorld(this.world);
-    this.renderer.renderEntities(this.entityManager);
-    this.renderer.renderPlayer(this.player);
-    this.renderer.renderMiningProgress(this.player, this.input);
-    this.renderer.renderBlockHighlight(this.input, this.player);
-    this.renderer.endRender();
+    try {
+      this.renderer.renderClouds(Date.now() * 0.001);
+      this.renderer.renderBackgroundMountains();
+      this.renderer.renderWorld(this.world);
+      this.renderer.renderEntities(this.entityManager);
+      this.renderer.renderPlayer(this.player);
+      this.renderer.renderMiningProgress(this.player, this.input);
+      this.renderer.renderBlockHighlight(this.input, this.player);
+    } catch (e) {
+      console.error('Render error:', e);
+    } finally {
+      this.renderer.endRender();
+    }
   }
 
   updateCraftingResult() {

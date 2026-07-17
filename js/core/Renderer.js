@@ -19,7 +19,8 @@ class Renderer {
   }
 
   setZoom(zoom) {
-    this.zoom = Math.max(1, Math.min(5, zoom));
+    const z = parseFloat(zoom);
+    this.zoom = (isNaN(z) || z < 1) ? 1 : Math.min(5, z);
   }
 
   get viewWidth() {
