@@ -155,12 +155,6 @@ class Game {
 
     if (this.input.isLeftDown()) {
       this.handleLeftClick();
-    } else if (this.input.touch.active && !this.input.touch.longPress && !this.input.touch.cursorActive) {
-      const touchDuration = Date.now() - this.input.touch.startTime;
-      if (touchDuration < 200 && this.input.touch.touches.length > 0) {
-        this.handleTouchTap();
-      }
-      this.player.stopMining();
     } else {
       this.player.stopMining();
     }

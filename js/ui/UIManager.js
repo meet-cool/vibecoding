@@ -355,7 +355,9 @@ class UIManager {
       html += `
         <div class="inv-slot" data-slot="${i}">
           ${slot.type ? `
-            <div class="item-icon" style="background:${itemInfo?.color || '#888'}"></div>
+            <div class="item-icon" style="background:${itemInfo?.color || '#888'}">
+              ${this.getItemIcon(itemInfo?.icon, itemInfo?.color)}
+            </div>
             ${slot.count > 1 ? `<span class="item-count">${slot.count}</span>` : ''}
           ` : ''}
         </div>
@@ -377,7 +379,9 @@ class UIManager {
         gridHtml += `
           <div class="craft-slot" data-craft-x="${x}" data-craft-y="${y}">
             ${slot.type ? `
-              <div class="item-icon" style="background:${itemInfo?.color || '#888'}"></div>
+              <div class="item-icon" style="background:${itemInfo?.color || '#888'}">
+                ${this.getItemIcon(itemInfo?.icon, itemInfo?.color)}
+              </div>
               ${slot.count > 1 ? `<span class="item-count">${slot.count}</span>` : ''}
             ` : ''}
           </div>
@@ -391,7 +395,9 @@ class UIManager {
     if (resultContainer) {
       const resultInfo = result ? ItemInfo[result.type] : null;
       resultContainer.innerHTML = result ? `
-        <div class="item-icon" style="background:${resultInfo?.color || '#888'}"></div>
+        <div class="item-icon" style="background:${resultInfo?.color || '#888'}">
+          ${this.getItemIcon(resultInfo?.icon, resultInfo?.color)}
+        </div>
         ${result.count > 1 ? `<span class="item-count">${result.count}</span>` : ''}
       ` : '';
       resultContainer.onclick = () => {
