@@ -279,43 +279,43 @@ class UIManager {
   }
 
   getItemIcon(iconType, color) {
+    const svgStyle = 'width:100%;height:100%;';
     switch (iconType) {
       case 'grass':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="12" width="20" height="10" fill="#8B4513"/><rect x="2" y="2" width="20" height="10" fill="#4CAF50"/><rect x="4" y="4" width="3" height="4" fill="#66BB6A"/><rect x="9" y="3" width="3" height="5" fill="#66BB6A"/><rect x="15" y="4" width="3" height="4" fill="#66BB6A"/><rect x="12" y="6" width="3" height="4" fill="#66BB6A"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="12" width="20" height="10" fill="#8B4513"/><rect x="2" y="2" width="20" height="10" fill="#4CAF50"/><rect x="4" y="4" width="3" height="4" fill="#66BB6A"/><rect x="9" y="3" width="3" height="5" fill="#66BB6A"/><rect x="15" y="4" width="3" height="4" fill="#66BB6A"/></svg>`;
       case 'log':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="#6D4C41"/><rect x="2" y="5" width="20" height="3" fill="#5D4037"/><rect x="2" y="11" width="20" height="3" fill="#5D4037"/><rect x="2" y="17" width="20" height="3" fill="#5D4037"/><rect x="0" y="2" width="4" height="20" fill="#4E342E"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="2" width="20" height="20" fill="#6D4C41"/><rect x="2" y="5" width="20" height="3" fill="#5D4037"/><rect x="2" y="11" width="20" height="3" fill="#5D4037"/><rect x="2" y="17" width="20" height="3" fill="#5D4037"/></svg>`;
       case 'leaves':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="#2E7D32"/><circle cx="7" cy="7" r="4" fill="#388E3C"/><circle cx="17" cy="7" r="4" fill="#388E3C"/><circle cx="7" cy="17" r="4" fill="#388E3C"/><circle cx="17" cy="17" r="4" fill="#388E3C"/><circle cx="12" cy="12" r="5" fill="#4CAF50"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="2" width="20" height="20" fill="#2E7D32"/><circle cx="7" cy="7" r="4" fill="#388E3C"/><circle cx="17" cy="7" r="4" fill="#388E3C"/><circle cx="7" cy="17" r="4" fill="#388E3C"/><circle cx="17" cy="17" r="4" fill="#388E3C"/></svg>`;
       case 'coal':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><polygon points="5,5 19,7 17,19 7,17" fill="#212121" stroke="#424242" stroke-width="2"/><rect x="9" y="9" width="6" height="6" fill="#424242"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><polygon points="5,5 19,7 17,19 7,17" fill="#212121" stroke="#424242" stroke-width="2"/></svg>`;
       case 'ore':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="#757575"/><polygon points="6,6 10,8 8,12" fill="${color}"/><polygon points="18,8 20,6 16,12" fill="${color}"/><polygon points="8,18 12,16 10,20" fill="${color}"/><polygon points="14,10 18,12 16,16" fill="${color}"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="2" width="20" height="20" fill="#757575"/><circle cx="8" cy="8" r="3" fill="${color}"/><circle cx="16" cy="12" r="3" fill="${color}"/><circle cx="10" cy="17" r="3" fill="${color}"/></svg>`;
       case 'ingot':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="4" y="6" width="16" height="12" rx="2" fill="${color}"/><rect x="6" y="8" width="3" height="8" fill="rgba(255,255,255,0.3)"/><rect x="15" y="8" width="3" height="8" fill="rgba(0,0,0,0.2)"/><rect x="10" y="14" width="4" height="2" fill="rgba(0,0,0,0.1)"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="4" y="6" width="16" height="12" rx="2" fill="${color}"/><rect x="6" y="8" width="4" height="8" fill="rgba(255,255,255,0.3)"/></svg>`;
       case 'planks':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/><line x1="2" y1="8" x2="22" y2="8" stroke="rgba(0,0,0,0.3)" stroke-width="1"/><line x1="2" y1="16" x2="22" y2="16" stroke="rgba(0,0,0,0.3)" stroke-width="1"/><line x1="8" y1="2" x2="8" y2="22" stroke="rgba(0,0,0,0.2)" stroke-width="0.5"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="2" width="20" height="20" fill="${color}"/><line x1="2" y1="8" x2="22" y2="8" stroke="rgba(0,0,0,0.3)" stroke-width="1"/><line x1="2" y1="16" x2="22" y2="16" stroke="rgba(0,0,0,0.3)" stroke-width="1"/></svg>`;
       case 'cobble':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/><polygon points="5,5 9,7 7,11" fill="rgba(0,0,0,0.25)"/><polygon points="17,7 19,5 15,11" fill="rgba(255,255,255,0.2)"/><polygon points="7,17 11,15 9,19" fill="rgba(255,255,255,0.15)"/><polygon points="15,15 17,17 13,19" fill="rgba(0,0,0,0.2)"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="2" width="20" height="20" fill="${color}"/><polygon points="5,5 9,7 7,11" fill="rgba(0,0,0,0.25)"/><polygon points="17,7 19,5 15,11" fill="rgba(255,255,255,0.2)"/></svg>`;
       case 'stick':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="2" width="4" height="20" fill="${color}"/><rect x="6" y="2" width="12" height="4" fill="#5D4037"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="10" y="2" width="4" height="20" fill="${color}"/></svg>`;
       case 'workbench':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="6" width="20" height="16" fill="#5D4037"/><rect x="2" y="2" width="20" height="6" fill="${color}"/><rect x="4" y="8" width="4" height="4" fill="#3E2723"/><rect x="16" y="8" width="4" height="4" fill="#3E2723"/><rect x="4" y="16" width="4" height="4" fill="#3E2723"/><rect x="16" y="16" width="4" height="4" fill="#3E2723"/><rect x="2" y="6" width="20" height="2" fill="#3E2723"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="6" width="20" height="16" fill="#5D4037"/><rect x="2" y="2" width="20" height="6" fill="${color}"/><rect x="4" y="8" width="4" height="4" fill="#3E2723"/><rect x="16" y="8" width="4" height="4" fill="#3E2723"/><rect x="4" y="16" width="4" height="4" fill="#3E2723"/><rect x="16" y="16" width="4" height="4" fill="#3E2723"/></svg>`;
       case 'pickaxe':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="8" width="4" height="16" fill="#5D4037"/><polygon points="12,8 2,2 8,8" fill="${color}" stroke="#333" stroke-width="0.5"/><polygon points="12,8 22,2 16,8" fill="${color}" stroke="#333" stroke-width="0.5"/><polygon points="6,4 12,8 10,6" fill="rgba(255,255,255,0.3)"/><polygon points="18,4 12,8 14,6" fill="rgba(255,255,255,0.3)"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="10" y="8" width="4" height="16" fill="#5D4037"/><polygon points="12,2 2,8 6,12 12,8 18,12 22,8" fill="${color}"/></svg>`;
       case 'sword':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="12" width="4" height="12" fill="#5D4037"/><polygon points="12,2 8,6 12,12 16,6" fill="${color}" stroke="#333" stroke-width="0.5"/><rect x="8" y="12" width="8" height="2" fill="#5D4037"/><polygon points="10,4 12,2 14,4" fill="rgba(255,255,255,0.4)"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="11" y="12" width="2" height="12" fill="#5D4037"/><rect x="8" y="10" width="8" height="3" fill="#5D4037"/><polygon points="12,2 8,10 12,10 16,10" fill="${color}"/></svg>`;
       case 'axe':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="6" width="4" height="18" fill="#5D4037"/><polygon points="12,6 2,4 4,14 12,10" fill="${color}" stroke="#333" stroke-width="0.5"/><polygon points="4,6 8,8 6,12" fill="rgba(255,255,255,0.3)"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="10" y="6" width="4" height="18" fill="#5D4037"/><polygon points="12,6 2,4 4,14 12,10" fill="${color}"/></svg>`;
       case 'meat':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><ellipse cx="12" cy="13" rx="8" ry="9" fill="${color}"/><rect x="8" y="2" width="8" height="4" fill="#8D6E63"/><rect x="6" y="8" width="2" height="6" fill="rgba(0,0,0,0.1)"/><rect x="16" y="8" width="2" height="6" fill="rgba(0,0,0,0.1)"/><ellipse cx="12" cy="13" rx="6" ry="7" fill="rgba(255,255,255,0.1)"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><ellipse cx="12" cy="14" rx="8" ry="8" fill="${color}"/><rect x="8" y="2" width="8" height="5" fill="#8D6E63"/></svg>`;
       case 'wool':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/><circle cx="7" cy="7" r="4" fill="rgba(255,255,255,0.3)"/><circle cx="17" cy="9" r="3" fill="rgba(0,0,0,0.1)"/><circle cx="12" cy="17" r="4" fill="rgba(255,255,255,0.2)"/><circle cx="5" cy="15" r="2" fill="rgba(0,0,0,0.1)"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="2" width="20" height="20" fill="${color}"/><circle cx="7" cy="7" r="4" fill="rgba(255,255,255,0.3)"/><circle cx="17" cy="17" r="4" fill="rgba(255,255,255,0.2)"/></svg>`;
       case 'torch':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="8" width="4" height="16" fill="#5D4037"/><ellipse cx="12" cy="8" rx="6" ry="6" fill="#FFD54F"/><ellipse cx="12" cy="4" rx="4" ry="4" fill="#FFA000"/><circle cx="12" cy="2" r="2" fill="#FFFFFF"/><circle cx="12" cy="6" r="3" fill="rgba(255,255,255,0.3)"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="10" y="8" width="4" height="16" fill="#5D4037"/><ellipse cx="12" cy="6" rx="5" ry="5" fill="#FFD54F"/><circle cx="12" cy="4" r="3" fill="#FFA000"/></svg>`;
       case 'block':
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/><rect x="2" y="2" width="20" height="4" fill="rgba(255,255,255,0.15)"/><rect x="2" y="2" width="4" height="20" fill="rgba(255,255,255,0.1)"/><rect x="18" y="2" width="4" height="20" fill="rgba(0,0,0,0.1)"/><rect x="2" y="18" width="20" height="4" fill="rgba(0,0,0,0.15)"/></svg>`;
       default:
-        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/></svg>`;
+        return `<svg viewBox="0 0 24 24" style="${svgStyle}"><rect x="2" y="2" width="20" height="20" fill="${color || '#888'}"/></svg>`;
     }
   }
 

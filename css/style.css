@@ -383,6 +383,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 .inv-slot .item-icon {
