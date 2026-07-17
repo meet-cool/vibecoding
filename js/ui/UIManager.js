@@ -160,6 +160,7 @@ class UIManager {
     this.renderHungerBar();
     this.renderHotbar();
     this.renderCoords();
+    this.renderTimeDisplay();
   }
 
   renderHealthBar() {
@@ -217,7 +218,9 @@ class UIManager {
       html += `
         <div class="hotbar-slot ${selected ? 'selected' : ''}" data-slot="${i}">
           ${slot.type ? `
-            <div class="item-icon" style="background:${itemInfo?.color || '#888'}"></div>
+            <div class="item-icon" style="background:${itemInfo?.color || '#888'}">
+              ${this.getItemIcon(itemInfo?.icon, itemInfo?.color)}
+            </div>
             ${slot.count > 1 ? `<span class="item-count">${slot.count}</span>` : ''}
           ` : ''}
         </div>
@@ -240,6 +243,84 @@ class UIManager {
     const x = Math.floor(this.game.player.x / TILE_SIZE);
     const y = Math.floor(this.game.player.y / TILE_SIZE);
     coordsEl.textContent = `X: ${x}  Y: ${y}`;
+  }
+
+  renderTimeDisplay() {
+    const timeEl = document.getElementById('timeDisplay');
+    if (!timeEl || !this.game) return;
+
+    const dayTime = this.game.dayTime || 0;
+    const dayLength = this.game.dayLength || 120;
+    const progress = dayTime / dayLength;
+
+    let hours = Math.floor(progress * 24);
+    let minutes = Math.floor((progress * 24 * 60) % 60);
+
+    let icon = '🕐';
+    if (hours >= 6 && hours < 8) {
+      icon = '🌅';
+    } else if (hours >= 8 && hours < 17) {
+      icon = '☀️';
+    } else if (hours >= 17 && hours < 19) {
+      icon = '🌇';
+    } else if (hours >= 19 && hours < 21) {
+      icon = '🌙';
+    } else {
+      icon = '🌑';
+    }
+
+    const timeStr = `${icon} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    timeEl.textContent = timeStr;
+  }
+
+  getItemIcon(iconType, color) {
+    switch (iconType) {
+      case 'grass':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="12" width="20" height="10" fill="#8B4513"/><rect x="2" y="2" width="20" height="10" fill="#4CAF50"/><rect x="4" y="4" width="3" height="4" fill="#66BB6A"/><rect x="9" y="3" width="3" height="5" fill="#66BB6A"/><rect x="15" y="4" width="3" height="4" fill="#66BB6A"/><rect x="12" y="6" width="3" height="4" fill="#66BB6A"/></svg>`;
+      case 'log':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="#6D4C41"/><rect x="2" y="5" width="20" height="3" fill="#5D4037"/><rect x="2" y="11" width="20" height="3" fill="#5D4037"/><rect x="2" y="17" width="20" height="3" fill="#5D4037"/><rect x="0" y="2" width="4" height="20" fill="#4E342E"/></svg>`;
+      case 'leaves':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="#2E7D32"/><circle cx="7" cy="7" r="4" fill="#388E3C"/><circle cx="17" cy="7" r="4" fill="#388E3C"/><circle cx="7" cy="17" r="4" fill="#388E3C"/><circle cx="17" cy="17" r="4" fill="#388E3C"/><circle cx="12" cy="12" r="5" fill="#4CAF50"/></svg>`;
+      case 'coal':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><polygon points="5,5 19,7 17,19 7,17" fill="#212121" stroke="#424242" stroke-width="2"/><rect x="9" y="9" width="6" height="6" fill="#424242"/></svg>`;
+      case 'ore':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="#757575"/><polygon points="6,6 10,8 8,12" fill="${color}"/><polygon points="18,8 20,6 16,12" fill="${color}"/><polygon points="8,18 12,16 10,20" fill="${color}"/><polygon points="14,10 18,12 16,16" fill="${color}"/></svg>`;
+      case 'ingot':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="4" y="6" width="16" height="12" rx="2" fill="${color}"/><rect x="6" y="8" width="3" height="8" fill="rgba(255,255,255,0.3)"/><rect x="15" y="8" width="3" height="8" fill="rgba(0,0,0,0.2)"/><rect x="10" y="14" width="4" height="2" fill="rgba(0,0,0,0.1)"/></svg>`;
+      case 'planks':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/><line x1="2" y1="8" x2="22" y2="8" stroke="rgba(0,0,0,0.3)" stroke-width="1"/><line x1="2" y1="16" x2="22" y2="16" stroke="rgba(0,0,0,0.3)" stroke-width="1"/><line x1="8" y1="2" x2="8" y2="22" stroke="rgba(0,0,0,0.2)" stroke-width="0.5"/></svg>`;
+      case 'cobble':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/><polygon points="5,5 9,7 7,11" fill="rgba(0,0,0,0.25)"/><polygon points="17,7 19,5 15,11" fill="rgba(255,255,255,0.2)"/><polygon points="7,17 11,15 9,19" fill="rgba(255,255,255,0.15)"/><polygon points="15,15 17,17 13,19" fill="rgba(0,0,0,0.2)"/></svg>`;
+      case 'stick':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="2" width="4" height="20" fill="${color}"/><rect x="6" y="2" width="12" height="4" fill="#5D4037"/></svg>`;
+      case 'workbench':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="6" width="20" height="16" fill="#5D4037"/><rect x="2" y="2" width="20" height="6" fill="${color}"/><rect x="4" y="8" width="4" height="4" fill="#3E2723"/><rect x="16" y="8" width="4" height="4" fill="#3E2723"/><rect x="4" y="16" width="4" height="4" fill="#3E2723"/><rect x="16" y="16" width="4" height="4" fill="#3E2723"/><rect x="2" y="6" width="20" height="2" fill="#3E2723"/></svg>`;
+      case 'pickaxe':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="8" width="4" height="16" fill="#5D4037"/><polygon points="12,8 2,2 8,8" fill="${color}" stroke="#333" stroke-width="0.5"/><polygon points="12,8 22,2 16,8" fill="${color}" stroke="#333" stroke-width="0.5"/><polygon points="6,4 12,8 10,6" fill="rgba(255,255,255,0.3)"/><polygon points="18,4 12,8 14,6" fill="rgba(255,255,255,0.3)"/></svg>`;
+      case 'sword':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="12" width="4" height="12" fill="#5D4037"/><polygon points="12,2 8,6 12,12 16,6" fill="${color}" stroke="#333" stroke-width="0.5"/><rect x="8" y="12" width="8" height="2" fill="#5D4037"/><polygon points="10,4 12,2 14,4" fill="rgba(255,255,255,0.4)"/></svg>`;
+      case 'axe':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="6" width="4" height="18" fill="#5D4037"/><polygon points="12,6 2,4 4,14 12,10" fill="${color}" stroke="#333" stroke-width="0.5"/><polygon points="4,6 8,8 6,12" fill="rgba(255,255,255,0.3)"/></svg>`;
+      case 'meat':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><ellipse cx="12" cy="13" rx="8" ry="9" fill="${color}"/><rect x="8" y="2" width="8" height="4" fill="#8D6E63"/><rect x="6" y="8" width="2" height="6" fill="rgba(0,0,0,0.1)"/><rect x="16" y="8" width="2" height="6" fill="rgba(0,0,0,0.1)"/><ellipse cx="12" cy="13" rx="6" ry="7" fill="rgba(255,255,255,0.1)"/></svg>`;
+      case 'wool':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/><circle cx="7" cy="7" r="4" fill="rgba(255,255,255,0.3)"/><circle cx="17" cy="9" r="3" fill="rgba(0,0,0,0.1)"/><circle cx="12" cy="17" r="4" fill="rgba(255,255,255,0.2)"/><circle cx="5" cy="15" r="2" fill="rgba(0,0,0,0.1)"/></svg>`;
+      case 'torch':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="10" y="8" width="4" height="16" fill="#5D4037"/><ellipse cx="12" cy="8" rx="6" ry="6" fill="#FFD54F"/><ellipse cx="12" cy="4" rx="4" ry="4" fill="#FFA000"/><circle cx="12" cy="2" r="2" fill="#FFFFFF"/><circle cx="12" cy="6" r="3" fill="rgba(255,255,255,0.3)"/></svg>`;
+      case 'block':
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/><rect x="2" y="2" width="20" height="4" fill="rgba(255,255,255,0.15)"/><rect x="2" y="2" width="4" height="20" fill="rgba(255,255,255,0.1)"/><rect x="18" y="2" width="4" height="20" fill="rgba(0,0,0,0.1)"/><rect x="2" y="18" width="20" height="4" fill="rgba(0,0,0,0.15)"/></svg>`;
+      default:
+        return `<svg viewBox="0 0 24 24" width="16" height="16" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><rect x="2" y="2" width="20" height="20" fill="${color}"/></svg>`;
+    }
+  }
+
+  isDarkColor(color) {
+    if (!color) return false;
+    const hex = color.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 4), 16);
+    const b = parseInt(hex.substr(4, 6), 16);
+    return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
   }
 
   updatePauseUI() {

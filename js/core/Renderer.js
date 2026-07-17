@@ -6,8 +6,6 @@ class Renderer {
     this.camera = { x: 0, y: 0 };
     this.width = canvas.width;
     this.height = canvas.height;
-    this.skyGradient = null;
-    this.dirtPattern = null;
     this.timeOfDay = 0;
   }
 
@@ -17,14 +15,6 @@ class Renderer {
     this.width = width;
     this.height = height;
     this.ctx.imageSmoothingEnabled = false;
-    this.createSkyGradient();
-  }
-
-  createSkyGradient() {
-    this.skyGradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
-    this.skyGradient.addColorStop(0, '#87CEEB');
-    this.skyGradient.addColorStop(0.5, '#B0E0E6');
-    this.skyGradient.addColorStop(1, '#E0F6FF');
   }
 
   updateCamera(targetX, targetY) {
@@ -35,9 +25,41 @@ class Renderer {
     this.camera.y = Math.max(0, Math.min(this.camera.y, WORLD_HEIGHT * TILE_SIZE - this.height));
   }
 
-  clear() {
-    this.ctx.fillStyle = this.skyGradient || '#87CEEB';
+  clear(timeOfDay = 0) {
+    this.timeOfDay = timeOfDay;
+    const skyColor = this.getSkyColor(timeOfDay);
+    this.ctx.fillStyle = skyColor;
     this.ctx.fillRect(0, 0, this.width, this.height);
+  }
+
+  getSkyColor(timeOfDay) {
+    const progress = timeOfDay / 120;
+    if (progress < 0.35) {
+      return this.lerpColor('#87CEEB', '#FFB74D', progress / 0.35);
+    } else if (progress < 0.45) {
+      return this.lerpColor('#FFB74D', '#FF5722', (progress - 0.35) / 0.1);
+    } else if (progress < 0.5) {
+      return this.lerpColor('#FF5722', '#87CEEB', (progress - 0.45) / 0.05);
+    } else if (progress < 0.85) {
+      return '#87CEEB';
+    } else if (progress < 0.95) {
+      return this.lerpColor('#87CEEB', '#7E57C2', (progress - 0.85) / 0.1);
+    } else {
+      return this.lerpColor('#7E57C2', '#1A237E', (progress - 0.95) / 0.05);
+    }
+  }
+
+  lerpColor(c1, c2, t) {
+    const r1 = parseInt(c1.slice(1, 3), 16);
+    const g1 = parseInt(c1.slice(3, 5), 16);
+    const b1 = parseInt(c1.slice(5, 7), 16);
+    const r2 = parseInt(c2.slice(1, 3), 16);
+    const g2 = parseInt(c2.slice(3, 5), 16);
+    const b2 = parseInt(c2.slice(5, 7), 16);
+    const r = Math.round(r1 + (r2 - r1) * t);
+    const g = Math.round(g1 + (g2 - g1) * t);
+    const b = Math.round(b1 + (b2 - b1) * t);
+    return `rgb(${r}, ${g}, ${b})`;
   }
 
   renderClouds(time) {
@@ -455,5 +477,22 @@ class Renderer {
     this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
     this.ctx.lineWidth = 2;
     this.ctx.strokeRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+  }
+
+  renderCursor(input, camera) {
+    if (!input.touch || !input.touch.cursorActive) return;
+
+    const screenX = input.touch.cursorX;
+    const screenY = input.touch.cursorY;
+
+    this.ctx.strokeStyle = 'rgba(255, 193, 7, 0.8)';
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeRect(screenX - 12, screenY - 12, 24, 24);
+
+    this.ctx.fillStyle = 'rgba(255, 193, 7, 0.8)';
+    this.ctx.fillRect(screenX - 1, screenY - 8, 2, 6);
+    this.ctx.fillRect(screenX - 1, screenY + 2, 2, 6);
+    this.ctx.fillRect(screenX - 8, screenY - 1, 6, 2);
+    this.ctx.fillRect(screenX + 2, screenY - 1, 6, 2);
   }
 }

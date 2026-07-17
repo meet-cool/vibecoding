@@ -24,6 +24,9 @@ class Game {
     this.autoSaveTimer = 0;
     this.autoSaveInterval = 30;
 
+    this.dayTime = 0;
+    this.dayLength = 120;
+
     this.ui = null;
     this.touchControls = null;
 
@@ -144,6 +147,11 @@ class Game {
     this.player.update(dt, this.world, this.physics, this.input);
     this.entityManager.update(dt, this.world, this.physics, this.player);
     this.world.updateChunks(this.player.x);
+
+    this.dayTime += dt;
+    if (this.dayTime >= this.dayLength) {
+      this.dayTime = 0;
+    }
 
     if (this.input.isLeftDown()) {
       this.handleLeftClick();
@@ -266,7 +274,7 @@ class Game {
   }
 
   render() {
-    this.renderer.clear();
+    this.renderer.clear(this.dayTime);
     this.renderer.renderClouds(Date.now() * 0.001);
     this.renderer.renderBackgroundMountains();
     this.renderer.renderWorld(this.world);
@@ -274,6 +282,7 @@ class Game {
     this.renderer.renderPlayer(this.player);
     this.renderer.renderMiningProgress(this.player, this.input);
     this.renderer.renderBlockHighlight(this.input, this.player);
+    this.renderer.renderCursor(this.input, this.camera);
   }
 
   updateCraftingResult() {
