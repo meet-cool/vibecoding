@@ -578,6 +578,58 @@ html, body {
   transform: scale(1.05);
 }
 
+.setting-item-slider {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: #424242;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #7CB342;
+  border: 2px solid #558B2F;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #7CB342;
+  border: 2px solid #558B2F;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider-value {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+  text-shadow: 1px 1px 0 #000;
+}
+
 .btn-danger {
   background: #c62828;
   border-color: #b71c1c;

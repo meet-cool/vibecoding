@@ -519,11 +519,27 @@ class UIManager {
     this.setupToggle('musicToggle', 'musicEnabled', false);
     this.setupToggle('touchToggle', 'touchControls', true);
     this.setupToggle('joystickToggle', 'joystickEnabled', false);
+    this.setupZoomSlider();
 
     document.getElementById('settingsPanel')?.addEventListener('click', (e) => {
       if (e.target === document.getElementById('settingsPanel')) {
         this.settingsPanel.style.display = 'none';
       }
+    });
+  }
+
+  setupZoomSlider() {
+    const slider = document.getElementById('mapZoomSlider');
+    const valueDisplay = document.getElementById('mapZoomValue');
+    if (!slider || !valueDisplay) return;
+
+    const saved = localStorage.getItem('sandbox2d_setting_mapZoom');
+    const value = saved ? parseFloat(saved) : 1;
+    slider.value = value;
+    valueDisplay.textContent = value;
+
+    slider.addEventListener('input', () => {
+      valueDisplay.textContent = slider.value;
     });
   }
 
@@ -548,6 +564,14 @@ class UIManager {
   }
 
   showSettingsPanel() {
+    const slider = document.getElementById('mapZoomSlider');
+    const valueDisplay = document.getElementById('mapZoomValue');
+    if (slider && valueDisplay) {
+      const saved = localStorage.getItem('sandbox2d_setting_mapZoom');
+      const value = saved ? parseFloat(saved) : 1;
+      slider.value = value;
+      valueDisplay.textContent = value;
+    }
     this.settingsPanel.style.display = 'flex';
   }
 
@@ -560,6 +584,11 @@ class UIManager {
       if (btn) {
         localStorage.setItem('sandbox2d_setting_' + keys[i], btn.dataset.value);
       }
+    }
+
+    const zoomSlider = document.getElementById('mapZoomSlider');
+    if (zoomSlider) {
+      localStorage.setItem('sandbox2d_setting_mapZoom', zoomSlider.value);
     }
     
     this.game.applySettings();

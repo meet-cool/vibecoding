@@ -96,14 +96,16 @@ class InputManager {
     }
   }
 
-  setCamera(camera) {
+  setCamera(camera, zoom = 1) {
     this.camera = camera;
+    this.zoom = zoom;
   }
 
   update() {
     if (this.camera) {
-      this.mouse.worldX = this.mouse.x + this.camera.x;
-      this.mouse.worldY = this.mouse.y + this.camera.y;
+      const z = this.zoom || 1;
+      this.mouse.worldX = this.mouse.x / z + this.camera.x;
+      this.mouse.worldY = this.mouse.y / z + this.camera.y;
     }
 
     if (this.mouse.leftDown) {

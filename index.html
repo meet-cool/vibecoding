@@ -10,7 +10,7 @@
   <div id="mainMenu">
     <h1 class="menu-title">2D 沙盒世界</h1>
     <p class="menu-subtitle">挖掘 · 建造 · 探索</p>
-    <div class="menu-version">v1.7.4</div>
+    <div class="menu-version">v1.7.5</div>
     <div class="menu-buttons">
       <button id="startBtn" class="menu-btn">创建新世界</button>
       <button id="continueBtn" class="menu-btn">继续游戏</button>
@@ -101,6 +101,13 @@
         <div class="setting-item">
           <label>摇杆移动</label>
           <button id="joystickToggle" class="toggle-btn off">关闭</button>
+        </div>
+        <div class="setting-item setting-item-slider">
+          <label>地图缩放</label>
+          <div class="slider-container">
+            <input type="range" id="mapZoomSlider" class="slider" min="1" max="5" step="1" value="1">
+            <span id="mapZoomValue" class="slider-value">1</span>
+          </div>
         </div>
       </div>
       <div class="panel-buttons">

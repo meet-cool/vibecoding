@@ -96,6 +96,10 @@ class Game {
       const joystickEnabled = localStorage.getItem('sandbox2d_setting_joystickEnabled');
       this.touchControls.toggleJoystick(joystickEnabled === 'true');
     }
+    const zoom = localStorage.getItem('sandbox2d_setting_mapZoom');
+    if (this.renderer) {
+      this.renderer.setZoom(zoom ? parseFloat(zoom) : 1);
+    }
   }
 
   saveGame() {
@@ -135,7 +139,7 @@ class Game {
 
   update(dt) {
     this.input.update();
-    this.input.setCamera(this.renderer.camera);
+    this.input.setCamera(this.renderer.camera, this.renderer.zoom);
 
     if (this.input.isKeyPressed('escape')) {
       this.paused = !this.paused;
@@ -233,8 +237,9 @@ class Game {
 
   handleTouchTap() {
     const touch = this.input.touch.touches[0];
-    const worldX = touch.x + this.renderer.camera.x;
-    const worldY = touch.y + this.renderer.camera.y;
+    const z = this.renderer.zoom || 1;
+    const worldX = touch.x / z + this.renderer.camera.x;
+    const worldY = touch.y / z + this.renderer.camera.y;
     const tileX = Math.floor(worldX / TILE_SIZE);
     const tileY = Math.floor(worldY / TILE_SIZE);
 
@@ -284,6 +289,7 @@ class Game {
     this.renderer.renderPlayer(this.player);
     this.renderer.renderMiningProgress(this.player, this.input);
     this.renderer.renderBlockHighlight(this.input, this.player);
+    this.renderer.endRender();
   }
 
   updateCraftingResult() {

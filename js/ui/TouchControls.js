@@ -7,15 +7,23 @@ class TouchControls {
     this.touchStartTime = 0;
     this.touchStartPos = null;
     this.isLongPress = false;
+    this.joystickEnabled = false;
 
     if (this.isMobile) {
       this.createControls();
       this.bindEvents();
+      this.applyJoystickSetting();
     }
   }
 
   checkMobile() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  applyJoystickSetting() {
+    const saved = localStorage.getItem('sandbox2d_setting_joystickEnabled');
+    this.joystickEnabled = saved === 'true';
+    this.toggleJoystick(this.joystickEnabled);
   }
 
   createControls() {
@@ -163,6 +171,7 @@ class TouchControls {
     const rect = this.game.canvas.getBoundingClientRect();
     const x = (touch.clientX - rect.left) * (this.game.canvas.width / rect.width);
     const y = (touch.clientY - rect.top) * (this.game.canvas.height / rect.height);
+    const z = this.game.renderer.zoom || 1;
 
     this.touchStartPos = { x, y };
     this.touchStartTime = Date.now();
@@ -170,8 +179,8 @@ class TouchControls {
 
     this.game.input.mouse.x = x;
     this.game.input.mouse.y = y;
-    this.game.input.mouse.worldX = x + this.game.renderer.camera.x;
-    this.game.input.mouse.worldY = y + this.game.renderer.camera.y;
+    this.game.input.mouse.worldX = x / z + this.game.renderer.camera.x;
+    this.game.input.mouse.worldY = y / z + this.game.renderer.camera.y;
 
     this.game.input.touch.active = true;
     this.game.input.touch.startTime = Date.now();
@@ -193,11 +202,12 @@ class TouchControls {
     const rect = this.game.canvas.getBoundingClientRect();
     const x = (touch.clientX - rect.left) * (this.game.canvas.width / rect.width);
     const y = (touch.clientY - rect.top) * (this.game.canvas.height / rect.height);
+    const z = this.game.renderer.zoom || 1;
 
     this.game.input.mouse.x = x;
     this.game.input.mouse.y = y;
-    this.game.input.mouse.worldX = x + this.game.renderer.camera.x;
-    this.game.input.mouse.worldY = y + this.game.renderer.camera.y;
+    this.game.input.mouse.worldX = x / z + this.game.renderer.camera.x;
+    this.game.input.mouse.worldY = y / z + this.game.renderer.camera.y;
 
     const dx = Math.abs(x - this.touchStartPos.x);
     const dy = Math.abs(y - this.touchStartPos.y);
@@ -233,8 +243,9 @@ class TouchControls {
   handleTap(screenX, screenY) {
     if (!this.game.player || !this.game.world) return;
 
-    const worldX = screenX + this.game.renderer.camera.x;
-    const worldY = screenY + this.game.renderer.camera.y;
+    const z = this.game.renderer.zoom || 1;
+    const worldX = screenX / z + this.game.renderer.camera.x;
+    const worldY = screenY / z + this.game.renderer.camera.y;
 
     const nearbyMobs = this.game.entityManager.getEntitiesNear(worldX, worldY, TILE_SIZE);
     for (const mob of nearbyMobs) {
@@ -250,9 +261,14 @@ class TouchControls {
   }
 
   toggleJoystick(enabled) {
+    this.joystickEnabled = enabled;
     const joystickArea = document.getElementById('joystickArea');
     if (joystickArea) {
       joystickArea.style.display = enabled ? 'block' : 'none';
+    }
+    if (!enabled && this.game.input && this.game.input.touch) {
+      this.game.input.touch.moveX = 0;
+      this.game.input.touch.moveY = 0;
     }
   }
 }

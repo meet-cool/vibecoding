@@ -7,6 +7,7 @@ class Renderer {
     this.width = canvas.width;
     this.height = canvas.height;
     this.timeOfDay = 0;
+    this.zoom = 1;
   }
 
   resize(width, height) {
@@ -17,12 +18,24 @@ class Renderer {
     this.ctx.imageSmoothingEnabled = false;
   }
 
-  updateCamera(targetX, targetY) {
-    this.camera.x = targetX - this.width / 2;
-    this.camera.y = targetY - this.height / 2;
+  setZoom(zoom) {
+    this.zoom = Math.max(1, Math.min(5, zoom));
+  }
 
-    this.camera.x = Math.max(0, Math.min(this.camera.x, WORLD_WIDTH * TILE_SIZE - this.width));
-    this.camera.y = Math.max(0, Math.min(this.camera.y, WORLD_HEIGHT * TILE_SIZE - this.height));
+  get viewWidth() {
+    return this.width / this.zoom;
+  }
+
+  get viewHeight() {
+    return this.height / this.zoom;
+  }
+
+  updateCamera(targetX, targetY) {
+    this.camera.x = targetX - this.viewWidth / 2;
+    this.camera.y = targetY - this.viewHeight / 2;
+
+    this.camera.x = Math.max(0, Math.min(this.camera.x, WORLD_WIDTH * TILE_SIZE - this.viewWidth));
+    this.camera.y = Math.max(0, Math.min(this.camera.y, WORLD_HEIGHT * TILE_SIZE - this.viewHeight));
   }
 
   clear(timeOfDay = 0) {
@@ -30,6 +43,12 @@ class Renderer {
     const skyColor = this.getSkyColor(timeOfDay);
     this.ctx.fillStyle = skyColor;
     this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.save();
+    this.ctx.scale(this.zoom, this.zoom);
+  }
+
+  endRender() {
+    this.ctx.restore();
   }
 
   getSkyColor(timeOfDay) {
@@ -68,7 +87,7 @@ class Renderer {
     const cloudY2 = 150 - this.camera.y * 0.3;
 
     for (let i = 0; i < 5; i++) {
-      const cx = ((i * 400 + time * 10) % (this.width + 400)) - 200 - (this.camera.x * 0.1) % 400;
+      const cx = ((i * 400 + time * 10) % (this.viewWidth + 400)) - 200 - (this.camera.x * 0.1) % 400;
       this.drawCloud(cx, cloudY1 + i * 30, 80 + i * 10);
     }
   }
@@ -83,38 +102,38 @@ class Renderer {
   }
 
   renderBackgroundMountains() {
-    const baseY = this.height - 200 + this.camera.y * 0.2;
+    const baseY = this.viewHeight - 200 + this.camera.y * 0.2;
     this.ctx.fillStyle = '#90A4AE';
 
     this.ctx.beginPath();
-    this.ctx.moveTo(0, this.height);
-    for (let x = 0; x <= this.width; x += 50) {
+    this.ctx.moveTo(0, this.viewHeight);
+    for (let x = 0; x <= this.viewWidth; x += 50) {
       const worldX = x + this.camera.x * 0.3;
       const h = Math.sin(worldX * 0.003) * 80 + Math.sin(worldX * 0.007) * 40 + 100;
       this.ctx.lineTo(x, baseY - h);
     }
-    this.ctx.lineTo(this.width, this.height);
+    this.ctx.lineTo(this.viewWidth, this.viewHeight);
     this.ctx.closePath();
     this.ctx.fill();
 
     this.ctx.fillStyle = '#B0BEC5';
     this.ctx.beginPath();
-    this.ctx.moveTo(0, this.height);
-    for (let x = 0; x <= this.width; x += 30) {
+    this.ctx.moveTo(0, this.viewHeight);
+    for (let x = 0; x <= this.viewWidth; x += 30) {
       const worldX = x + this.camera.x * 0.5;
       const h = Math.sin(worldX * 0.005 + 10) * 60 + Math.sin(worldX * 0.01) * 30 + 60;
       this.ctx.lineTo(x, baseY + 40 - h);
     }
-    this.ctx.lineTo(this.width, this.height);
+    this.ctx.lineTo(this.viewWidth, this.viewHeight);
     this.ctx.closePath();
     this.ctx.fill();
   }
 
   renderWorld(world) {
     const startTileX = Math.floor(this.camera.x / TILE_SIZE);
-    const endTileX = Math.ceil((this.camera.x + this.width) / TILE_SIZE);
+    const endTileX = Math.ceil((this.camera.x + this.viewWidth) / TILE_SIZE);
     const startTileY = Math.floor(this.camera.y / TILE_SIZE);
-    const endTileY = Math.ceil((this.camera.y + this.height) / TILE_SIZE);
+    const endTileY = Math.ceil((this.camera.y + this.viewHeight) / TILE_SIZE);
 
     for (let y = Math.max(0, startTileY); y < Math.min(WORLD_HEIGHT, endTileY); y++) {
       for (let x = Math.max(0, startTileX); x < Math.min(WORLD_WIDTH, endTileX); x++) {
