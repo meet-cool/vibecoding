@@ -31,7 +31,8 @@ window.addEventListener('load', () => {
       return;
     }
 
-    if (touchControls.isMobile && game.input.touch) {
+    // 摇杆移动：只要摇杆启用且有移动输入就应用，不依赖isMobile判断
+    if (touchControls.joystickEnabled && game.input.touch) {
       const moveX = game.input.touch.moveX || 0;
       if (Math.abs(moveX) > 0.1) {
         game.input.keys['a'] = moveX < 0;

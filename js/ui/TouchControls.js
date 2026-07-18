@@ -27,9 +27,11 @@ class TouchControls {
   }
 
   updateActionButtonsVisibility() {
+    // 操作按钮（跳跃、背包）只在游戏中显示，由showGameScreen控制
+    // 这里不再根据isMobile隐藏，确保触屏设备都能使用
     const actionButtons = document.querySelector('.action-buttons');
     if (actionButtons) {
-      actionButtons.style.display = this.isMobile ? 'flex' : 'none';
+      actionButtons.style.display = 'flex';
     }
   }
 

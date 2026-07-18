@@ -57,6 +57,11 @@ class Player extends Entity {
       physics.jump(this);
     }
 
+    // 触屏跳跃按钮
+    if (input.touch && input.touch.jump) {
+      physics.jump(this);
+    }
+
     super.update(dt, world, physics);
 
     if (this.x < this.width) {
