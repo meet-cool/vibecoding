@@ -647,7 +647,7 @@ html, body {
   height: 100%;
   pointer-events: none;
   z-index: 55;
-  display: none;
+  display: block;
 }
 
 .joystick-area {

@@ -36,6 +36,7 @@ class TouchControls {
   applyJoystickSetting() {
     const saved = localStorage.getItem('sandbox2d_setting_joystickEnabled');
     this.joystickEnabled = saved === 'true';
+    console.log('[TouchControls] applyJoystickSetting:', this.joystickEnabled, '(saved:', saved, ')');
     this.toggleJoystick(this.joystickEnabled);
   }
 
@@ -275,9 +276,18 @@ class TouchControls {
 
   toggleJoystick(enabled) {
     this.joystickEnabled = enabled;
+    console.log('[TouchControls] toggleJoystick:', enabled);
     const joystickArea = document.getElementById('joystickArea');
     if (joystickArea) {
       joystickArea.style.display = enabled ? 'block' : 'none';
+      console.log('[TouchControls] joystickArea display set to:', joystickArea.style.display, 'element:', joystickArea);
+    } else {
+      console.warn('[TouchControls] joystickArea element NOT FOUND!');
+    }
+    // 确保父容器可见
+    const container = document.getElementById('touchControls');
+    if (container) {
+      container.style.display = 'block';
     }
     if (!enabled && this.game.input && this.game.input.touch) {
       this.game.input.touch.moveX = 0;
