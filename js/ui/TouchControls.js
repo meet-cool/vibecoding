@@ -9,15 +9,28 @@ class TouchControls {
     this.isLongPress = false;
     this.joystickEnabled = false;
 
-    if (this.isMobile) {
-      this.createControls();
-      this.bindEvents();
-      this.applyJoystickSetting();
-    }
+    // 始终创建控件，确保摇杆元素存在于DOM中，以便设置中可以切换显示
+    this.createControls();
+    this.bindEvents();
+    this.applyJoystickSetting();
+
+    // 非移动设备隐藏操作按钮（跳跃、背包），摇杆显示由设置控制
+    this.updateActionButtonsVisibility();
   }
 
   checkMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // 检查UA、触摸支持、屏幕尺寸，避免漏判移动设备
+    const ua = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const smallScreen = Math.min(window.innerWidth, window.innerHeight) <= 1024;
+    return ua || (touch && smallScreen);
+  }
+
+  updateActionButtonsVisibility() {
+    const actionButtons = document.querySelector('.action-buttons');
+    if (actionButtons) {
+      actionButtons.style.display = this.isMobile ? 'flex' : 'none';
+    }
   }
 
   applyJoystickSetting() {
