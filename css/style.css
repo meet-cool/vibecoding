@@ -657,6 +657,7 @@ html, body {
   width: 140px;
   height: 140px;
   pointer-events: auto;
+  display: none;
 }
 
 .joystick-base {
